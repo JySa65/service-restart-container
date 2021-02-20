@@ -1,0 +1,23 @@
+#
+#
+# 1. Copy this file to the directory: /etc/systemd/system or /lib/systemd/system/
+# 2. Start and stop the service running: systemctl start/stop restart_container
+# 3. To enable autostart at boot run: sudo systemctl enable restart_container
+#
+[Unit]
+Description=Daemon restart service
+
+[Service]
+Type=forking
+LimitNOFILE=802400
+ExecStart=/etc/init.d/restart_container start
+ExecStop=/etc/init.d/restart_container stop
+ExecReload=/etc/init.d/restart_container restart
+Restart=on-failure
+StandardOutput=append:/var/log/restart_container.log
+StandardError=append:/var/log/restart_container.log
+SyslogIdentifier=restart_container
+
+
+[Install]
+WantedBy=multi-user.target
